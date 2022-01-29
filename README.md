@@ -1,7 +1,9 @@
 This is my sample project to get comfortable with D3.
 
-It's based on the following example:
-<https://bl.ocks.org/mbostock/22994cc97fefaeede0d861e6815a847e>
+It's hosted at <https://beedots.glitch.me>.
+
+It's based on
+<https://bl.ocks.org/mbostock/22994cc97fefaeede0d861e6815a847e>.
 
 Other potentially handy links:
 
