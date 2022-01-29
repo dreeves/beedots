@@ -1,0 +1,50 @@
+#graph {
+  width: 100%;
+  height: 50%;
+  background-color: #eee;
+}
+
+svg {
+  width:  100%;
+  height: 100%;
+}
+
+.active {
+  stroke: #00f;
+  stroke-width: 2px;
+}
+
+.axis path, .axis line {
+  fill: none;
+  stroke: black;
+  shape-rendering: crispEdges; /* round decimal pixels so it renders nicely */
+}
+
+circle {
+  cursor: pointer;
+}
+
+.monospace {
+  font-family: fantasy, "DejaVu Sans Mono", "Lucida Console", Monaco, monospace;
+}
+
+table {
+  border-collapse: collapse;
+  font-family: monospace;
+}
+
+th {
+  border-bottom: 1px solid #ddd;
+}
+
+th, td {
+  text-align: right;
+  padding: 1px 1px 1px 1px;
+  overflow: hidden;
+}
+
+td:nth-child(1) { width: 0px; }
+td:nth-child(2) { width: 200px; }
+td:nth-child(3) { width: 200px; }
+
+tr:hover { background-color: #FFFBCC; }
