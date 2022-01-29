@@ -62,7 +62,8 @@ function ondrag(event, d) {
 //ym -= 55 //   the right by about this many pixels. I have not figured out why!
 // (With those offsets it's as close to correct as I can get it but if you look
 // closely when you start to drag a dot you can see that it's still not quite 
-// right.)
+// right. And obviously shoehorning these arbitrary offsets isn't a good fix for
+// whatever's going wrong here anyway.)
 // -----------------------------------------------------------------------------
 
   //const [xe, ye] = [event.x, event.y] // the delta in pixels? no, that's .dx/.dy
