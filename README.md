@@ -1,11 +1,10 @@
-Uluc's suggestions:
+This is my sample project to get comfortable with D3.
 
-https://bl.ocks.org/mbostock/22994cc97fefaeede0d861e6815a847e
-Add to that, for example, means of adding and removing dots.
+It's based on the following example:
+<https://bl.ocks.org/mbostock/22994cc97fefaeede0d861e6815a847e>
 
-Alternatively add axis elements to the svg as in: 
-https://www.tutorialsteacher.com/d3js/axes-in-d3
+Other potentially handy links:
 
-Dreev's favorite tutorial:
-https://medium.freecodecamp.org/a-linguistic-introduction-to-d3-js-7a40a980bf97
-https://medium.com/free-code-camp/a-linguistic-introduction-to-d3-js-7a40a980bf97
+* <https://www.tutorialsteacher.com/d3js/axes-in-d3>
+* My favorite D3 tutorial:
+<https://medium.com/free-code-camp/a-linguistic-introduction-to-d3-js-7a40a980bf97>
