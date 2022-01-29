@@ -56,10 +56,11 @@ function destroy(event, d) {
 }
 
 function ondrag(event, d) {
+  console.log(event);
   let [xm, ym] = d3.pointer(event)
 // -----------------------------------------------------------------------------
-//xm -= 37 // Without these offsets, the dot you're dragging jumps down and to
-//ym -= 55 //   the right by about this many pixels. I have not figured out why!
+xm -= 39 // Without these offsets, the dot you're dragging jumps down and to
+ym -= 59 //   the right by about this many pixels. I have not figured out why!
 // (With those offsets it's as close to correct as I can get it but if you look
 // closely when you start to drag a dot you can see that it's still not quite 
 // right. And obviously shoehorning these arbitrary offsets isn't a good fix for
@@ -71,8 +72,8 @@ function ondrag(event, d) {
   
   d.x = xsci(xm)
   d.y = ysci(ym)
-  d3.select(this).attr("cx", xm - MR)
-                 .attr("cy", ym - MB - MT - 10)
+  d3.select(this).attr("cx", xm)
+                 .attr("cy", ym)
   updateT() // only have to update the table while dragging
 }
 
