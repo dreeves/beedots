@@ -4,12 +4,11 @@
 
 /* global d3 [listed here to shut jslint up] */
 
-//import * as d3 from "https://cdn.skypack.dev/d3@7";
-
 const ML = 31 // left margin
 const MR = 31 // right margin
 const MT = 11 // top margin
 const MB = 31 // bottom margin
+const DR = 16*3 // dot radius
 
 const W = window.innerWidth    - ML - MR // width of the window w/o the margins
 const H = window.innerHeight/2 - MT - MB // height of the window w/o the margins
@@ -55,19 +54,32 @@ function destroy(event, d) {
   updateC()
 }
 
-function ondrag(event, d) {
-  let [xm, ym] = d3.pointer(event)
 // -----------------------------------------------------------------------------
-//xm -= 37 // Without these offsets, the dot you're dragging jumps down and to
-//ym -= 55 //   the right by about this many pixels. I have not figured out why!
-// (With those offsets it's as close to correct as I can get it but if you look
-// closely when you start to drag a dot you can see that it's still not quite 
-// right. And obviously shoehorning these arbitrary offsets isn't a good fix for
-// whatever's going wrong here anyway.)
+// Why do we need to offset by the top and left margins when dragging the dot 
+// but we don't need to do that when creating the dot? The internet is
+// suggesting -- https://stackoverflow.com/a/29713231/4234 -- that it has to do
+// the 'g' (group) element in the SVG?
 // -----------------------------------------------------------------------------
 
-  //const [xe, ye] = [event.x, event.y] // the delta in pixels? no, that's .dx/.dy
-  //console.log(`event (${xe}, ${ye}), mouse (${xm}, ${ym})`)
+function dragstart(event, d) {
+  
+}
+
+function ondrag(event, d) {
+  const [xp, yp] = [xsc(d.x) + ML,                // initial pixel coords of dot
+                    ysc(d.y) + MT]
+  const [xm, ym] = [event.sourceEvent.offsetX - ML,     // pixel coords of mouse
+                    event.sourceEvent.offsetY - MT]
+  const [dx, dy] = [xp-xm, yp-ym]
+  
+  console.log(`\
+(x,y)   = (${d.x},${d.y})
+(xp,yp) = (${xp},${yp})
+(xo,yo) = (${d3.pointer(event)})
+(xe,ye) = (${event.x},${event.y})
+(sx,sy) = (${event.sourceEvent.offsetX},${event.sourceEvent.offsetY})
+(dx,dy) = (${event.dx},${event.dy})
+`)
   
   d.x = xsci(xm)
   d.y = ysci(ym)
@@ -87,7 +99,7 @@ function updateT() {
 function updateC() {
   svg.selectAll('circle').data(points).join('circle')
     .attr('transform', tr())
-    .attr('r', 16)
+    .attr('r', DR)
     .attr('cx', d => xsc(d.x))
     .attr('cy', d => ysc(d.y))
     .attr('stroke-width', '2px').attr('stroke', 'black')
