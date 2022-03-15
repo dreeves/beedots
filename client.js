@@ -8,25 +8,28 @@ const ML = 31 // left margin
 const MR = 31 // right margin
 const MT = 11 // top margin
 const MB = 31 // bottom margin
-const DR = 16*3 // dot radius
+const DR = 16 // dot radius
 
 const W = window.innerWidth    - ML - MR // width of the window w/o the margins
 const H = window.innerHeight/2 - MT - MB // height of the window w/o the margins
 
 const xsc  = d3.scaleLinear([0,1], [0,W]) // Scale/lerp from [0,1] to [0,W]
 const ysc  = d3.scaleLinear([0,1], [H,0]) //   and similar for the y-axis.
-const xsci = d3.scaleLinear([0,W], [0,1]) // Inverse-lerp to go from pixel coords
-const ysci = d3.scaleLinear([H,0], [0,1]) //   back to math coords.
+const xsci = d3.scaleLinear([0,W], [0,1]) // Inverse-lerp to go from pixel
+const ysci = d3.scaleLinear([H,0], [0,1]) //   coords back to math coords.
 
 const N = 10 // create this many dots/points initially
 let points = Array.from({length: N}, (_,i) => ({ i: i+1,
                                                  x: (i+1/2)/N,
-                                                 y: Math.random(),   }))
+                                                 y: Math.random() }))
 
 const colorScale = d3.scaleOrdinal().range(d3.schemeCategory10)
 
 const svg = d3.select('#graph').append('svg').attr('width',  W + ML + MR)
                                              .attr('height', H + MT + MB)
+
+let xdelta = 0 // deltas between dot center and mouse pointer for dragging
+let ydelta = 0
 
 svg.append('g').attr('transform', tr(H)).call(d3.axisBottom(xsc).ticks(10))
 svg.append('g').attr('transform', tr() ).call(d3.axisLeft(  ysc).ticks(10))
@@ -35,9 +38,9 @@ svg.append('g').attr('transform', tr() ).call(d3.axisLeft(  ysc).ticks(10))
 svg.append('g').attr('transform', tr()).append('rect')
   .style('opacity', 0).attr('width', W).attr('height', H).on('click', conjure)
 
-const tbl = d3.select('#data')
+const tbl = d3.select('#data') // the data table
 
-updateC()
+updateC() // update circles
 
 function tr(h=0) { return `translate(${ML},${MT+h})` } // svg translation
 
@@ -47,7 +50,7 @@ function conjure(event) {
                 x: xsci(xm),
                 y: ysci(ym) })
   updateC()
-} 
+}
 
 function destroy(event, d) {
   points = points.filter(z => z.i !== d.i)
@@ -57,34 +60,27 @@ function destroy(event, d) {
 // -----------------------------------------------------------------------------
 // Why do we need to offset by the top and left margins when dragging the dot 
 // but we don't need to do that when creating the dot? The internet is
-// suggesting -- https://stackoverflow.com/a/29713231/4234 -- that it has to do
-// the 'g' (group) element in the SVG?
+// suggesting that it has to do the 'g' (group) element in the SVG?
+//   https://stackoverflow.com/a/29713231/4234
+// Also, I'm not sure why we need event.sourceEvent.offsetX/Y instead of just
+// event.x/y or event.dx/y.
 // -----------------------------------------------------------------------------
 
 function dragstart(event, d) {
-  
+  const [xp, yp] = [xsc(d.x) + ML,                // initial pixel coords of dot
+                    ysc(d.y) + MT]
+  const [xm, ym] = [event.sourceEvent.offsetX,    // pixel coords of mouse
+                    event.sourceEvent.offsetY]
+  ;[xdelta, ydelta] = [xp-xm, yp-ym]     // remember these offsets when dragging
 }
 
 function ondrag(event, d) {
-  const [xp, yp] = [xsc(d.x) + ML,                // initial pixel coords of dot
-                    ysc(d.y) + MT]
-  const [xm, ym] = [event.sourceEvent.offsetX - ML,     // pixel coords of mouse
-                    event.sourceEvent.offsetY - MT]
-  const [dx, dy] = [xp-xm, yp-ym]
-  
-  console.log(`\
-(x,y)   = (${d.x},${d.y})
-(xp,yp) = (${xp},${yp})
-(xo,yo) = (${d3.pointer(event)})
-(xe,ye) = (${event.x},${event.y})
-(sx,sy) = (${event.sourceEvent.offsetX},${event.sourceEvent.offsetY})
-(dx,dy) = (${event.dx},${event.dy})
-`)
-  
-  d.x = xsci(xm)
-  d.y = ysci(ym)
-  d3.select(this).attr("cx", xm)
-                 .attr("cy", ym)
+  const [xm, ym] = [event.sourceEvent.offsetX - ML,
+                    event.sourceEvent.offsetY - MT]  
+  d.x = xsci(xm+xdelta)
+  d.y = ysci(ym+ydelta)
+  d3.select(this).attr("cx", xm+xdelta)
+                 .attr("cy", ym+ydelta)
   updateT() // only have to update the table while dragging
 }
 
@@ -108,6 +104,7 @@ function updateC() {
     .call(d3.drag()
       //.container(d3.select('#graph'))
       //.subject(d => ({x: xsc(d.x), y: ysc(d.y)}))
+      .on("start", dragstart)
       .on("drag", ondrag))
   updateT()
 }

@@ -10,3 +10,4 @@ Other potentially handy links:
 * <https://www.tutorialsteacher.com/d3js/axes-in-d3>
 * My favorite D3 tutorial:
 <https://medium.com/free-code-camp/a-linguistic-introduction-to-d3-js-7a40a980bf97>
+* <https://observablehq.com/@d3/circle-dragging-i?collection=@d3/d3-drag>
