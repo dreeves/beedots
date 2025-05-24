@@ -1,6 +1,7 @@
 This is my sample project to get comfortable with D3.
 
-It's hosted at <https://beedots.glitch.me> (until Glitch goes away, in 2025).
+It started on Glitch and now is hosted here:
+<https://dreeves.github.io/beedots/>
 
 It's based on
 <https://bl.ocks.org/mbostock/22994cc97fefaeede0d861e6815a847e>.
